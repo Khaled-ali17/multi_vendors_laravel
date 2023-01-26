@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('vendor_business_detail', function (Blueprint $table) {
+        Schema::table('products', function (Blueprint $table) {
             //
-            $table->string('pen_number')->nullable()->after('gst_number');
+            $table->integer('admin_id')->after('vendor_id');
         });
     }
 
@@ -26,9 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('vendor_business_detail', function (Blueprint $table) {
+        Schema::table('products', function (Blueprint $table) {
             //
-            $table->dropColumn('pen_number');
+            $table->dropColumn('admin_id');
         });
     }
 };

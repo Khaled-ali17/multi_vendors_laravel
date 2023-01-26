@@ -23,7 +23,11 @@ class DatabaseSeeder extends Seeder
 
          //$this->call(AdminTableSeeder::class);
         //$this->call(VendorsTableSeeder::class);
-        $this->call(VendorBusinessDetailSeeder::class);
+        // $this->call(VendorBusinessDetailSeeder::class);
       //  $this->call(VendorBankDetailSeeder::class);
+     // $this->call(SectionTableSeeder::class);
+     // $this->call(CategoryTableSeeder::class);
+    //$this->call(BrandTableSeeder::class);
+    $this->call(ProductTableSeeder::class);
     }
 }

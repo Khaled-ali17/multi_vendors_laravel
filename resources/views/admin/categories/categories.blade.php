@@ -6,31 +6,37 @@
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">{{ $title }}</h4>
-                            {{-- <p class="card-description">
-                     Add class <code>.table-bordered</code>
-                  </p> --}}
+                            <h4 class="card-title">Categories</h4>
+
+                            <a style="max-width: 200px; float:right; display:inline-block"
+                                href="{{ url('admin/add-edit-category') }}" class="btn btn-block btn-primary"> Add New
+                                Category</a>
+                            @if (Session::has('success_message'))
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>Success : </strong> {{ Session::get('success_message') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
                             <div class="table-responsive pt-3">
-                                <table class="table table-bordered">
+                                <table id="categories" class="table table-bordered">
                                     <thead>
                                         <tr>
                                             <th>
-                                                Admin ID
+                                                ID
                                             </th>
                                             <th>
-                                                Name
+                                                Category
                                             </th>
                                             <th>
-                                                Type
+                                                Parent Category
                                             </th>
                                             <th>
-                                                Mobile
+                                                Section
                                             </th>
                                             <th>
-                                                Email
-                                            </th>
-                                            <th>
-                                                Image
+                                                URL
                                             </th>
                                             <th>
                                                 Status
@@ -42,47 +48,61 @@
                                     </thead>
 
                                     <tbody>
-                                        @foreach ($admins as $admin)
+                                        @foreach ($categories as $category)
+                                            @if (isset($category['parentcategory']['category_name']) && !empty($category['parentcategory']['category_name']))
+                                                @php
+                                                $parent_category = $category['parentcategory']['category_name']; @endphp 
+                                            @else
+                                                @php $parent_category = 'Root';  @endphp
+                                            @endif
                                             <tr>
                                                 <td>
-                                                    {{ $admin['id'] }}
+                                                    {{ $category['id'] }}
                                                 </td>
                                                 <td>
-                                                    {{ $admin['name'] }}
+                                                    {{ $category['category_name'] }}
                                                 </td>
                                                 <td>
-                                                    {{ $admin['type'] }}
+                                                    {{ $parent_category }}
                                                 </td>
                                                 <td>
-                                                    {{ $admin['mobile'] }}
+                                                    {{ $category['section']['name'] }}
                                                 </td>
                                                 <td>
-                                                    {{ $admin['email'] }}
+                                                    {{ $category['url'] }}
                                                 </td>
+
                                                 <td>
-                                                    <img src="{{ asset('admin/images/photos/' . $admin['image']) }}">
-                                                </td>
-                                                <td>
-                                                    @if ($admin['status'] == 1)
-                                                        <a class="updateAdminStatus" id="admin-{{ $admin['id'] }}"
-                                                            admin_id="{{ $admin['id'] }}" href="javascript:void(0)">
+                                                    @if ($category['status'] == 1)
+                                                        <a class="updateCategoryStatus" id="category-{{ $category['id'] }}"
+                                                            category_id="{{ $category['id'] }}" href="javascript:void(0)">
                                                             <i style="font-size: 25px" class="mdi mdi-bookmark-check"
                                                                 status="Active"></i>
                                                         </a>
                                                     @else
-                                                        <a class="updateAdminStatus" id="admin-{{ $admin['id'] }}"
-                                                            admin_id="{{ $admin['id'] }}" href="javascript:void(0)">
+                                                        <a class="updateCategoryStatus" id="category-{{ $category['id'] }}"
+                                                            category_id="{{ $category['id'] }}" href="javascript:void(0)">
                                                             <i style="font-size: 25px" class="mdi mdi-bookmark-outline"
                                                                 status="Inactive"></i>
                                                         </a>
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if ($admin['type'] == 'vendor')
-                                                        <a href="{{ url('admin/view-vendor-details/' . $admin['id']) }}">
-                                                            <i style="font-size: 25px"
-                                                                class="mdi mdi-file-document"></i></a>
-                                                    @endif
+
+                                                    <a href="{{ url('admin/add-edit-category/' . $category['id']) }}">
+                                                        <i style="font-size: 25px" class="mdi mdi-pencil-box"></i></a>
+
+                                                    {{-- <a title="category" class="confirmDelete"
+                                                        href="{{ url('admin/delete-category/' . $category['id']) }}">
+                                                        <i style="font-size: 25px" class="mdi mdi-file-excel-box"></i></a> --}}
+
+
+                                                    <a href="javascript:void(0)" class="confirmDelete" module="category"
+                                                        moduleid="{{ $category['id'] }}">
+                                                        <i style="font-size: 25px" class="mdi mdi-file-excel-box"></i></a>
+
+
+
                                                 </td>
                                         @endforeach
                                     </tbody>
